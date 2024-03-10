@@ -1,4 +1,5 @@
 ############### Blackjack Project #####################
+import random
 
 #Difficulty Normal 😎: Use all Hints below to complete the project.
 #Difficulty Hard 🤔: Use only Hints 1, 2, 3 to complete the project.
@@ -58,4 +59,86 @@
 #Hint 13: Create a function called compare() and pass in the user_score and computer_score. If the computer and user both have the same score, then it's a draw. If the computer has a blackjack (0), then the user loses. If the user has a blackjack (0), then the user wins. If the user_score is over 21, then the user loses. If the computer_score is over 21, then the computer loses. If none of the above, then the player with the highest score wins.
 
 #Hint 14: Ask the user if they want to restart the game. If they answer yes, clear the console and start a new game of blackjack and show the logo from art.py.
+
+deck = {"1" : 1,
+        "2" : 2,
+        "3" : 3,
+        "4" : 4,
+        "5" : 5,
+        "6" : 6,
+        "7" : 7,
+        "8" : 8,
+        "9" : 9,
+        "10" : 10,
+        "J" : 10,
+        "Q" : 10,
+        "K" : 10,
+        "A" : 11,
+        }
+
+def pick_card ():
+    card = ""
+    card_value = 0
+    card_value = random.choice(list(deck.values()))
+    return card_value
+
+def sum_card_values(card_values_list):
+    card_values_sum = 0
+    for card in card_values_list:
+        card_values_sum += card
+    return card_values_sum
+def modify_deck(current_deck):
+    if sum_card_values(current_deck) > 21:
+        for card_value in current_deck:
+            if card_value == 11:
+                current_deck.append(1)
+                current_deck.remove(card_value)
+                break
+    return current_deck
+
+
+play_game = True
+while play_game:
+    current_deck = []
+    dealers_deck_values = []
+    end_game = False
+    player_picks_card = True
+    dealer_picks_card = True
+    while not end_game:
+        if player_picks_card == True:
+            current_deck.append(pick_card())
+        if dealer_picks_card == True:
+            dealers_deck_values.append(pick_card())
+        print(f"Players deck values {current_deck}\n"
+              f"Dealers deck values {dealers_deck_values}")
+        print(f"Sum of the players card values: {sum_card_values(current_deck)}")
+        if sum_card_values(current_deck) > 21:
+            for card_value in current_deck:
+                if card_value == 11:
+                    current_deck.append(1)
+                    current_deck.remove(card_value)
+                    break
+
+        print(f"Sum of the dealers card values: {sum_card_values(dealers_deck_values)}")
+
+        if player_picks_card == True:
+            player_picks_card_input = input("Do you want to pick another card?")
+            if player_picks_card_input == "no":
+                player_picks_card = False
+
+        if sum_card_values(dealers_deck_values) >= 18:
+            dealer_picks_card = False
+        if player_picks_card == False and dealer_picks_card == False:
+            end_game = True
+
+    print(f"Sum of the players card values at the end of the game: {sum_card_values(current_deck)}")
+    print(f"Sum of the dealers card values at the end of the game: {sum_card_values(dealers_deck_values)}")
+
+    play_game = input("Do you want to play new game?").lower()
+    if play_game == "no":
+        play_game = False
+
+
+
+
 
